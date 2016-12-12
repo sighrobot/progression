@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+	<title></title>
+	<style>
+		html,
+		body {
+			margin: 0;
+		}
+
+		body {
+			height: 100vh;
+		}
+
+		.container {
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.progression {
+			align-items: center;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			height: 100%;
+			width: 75%;
+		}
+
+		.progression-top {
+			background: #333;
+			height: 2vw;
+			width: 100%;
+		}
+
+		.progression-bottom {
+			display: flex;
+			width: 100%;
+		}
+
+		.box {
+			height: 2vw;
+			flex-shrink: 0;
+		}
+
+	</style>
+
+</head>
+<body>
+	<div class="container">
+		<div class="progression">
+			<div class="progression-top"></div>
+			<div class="progression-bottom"></div>
+		</div>
+	</div>
+	
+
+	<script>
+		const ROLL_BARS = Math.random();
+		const NUM_BARS = ROLL_BARS > 0.5 ? 5 : 8;
+		const relW = ROLL_BARS > 0.5 ? 23 : 87;
+
+		const fibs = [1, 1, 2, 3, 5, 8, 13, 21];
+		const progression = document.querySelector('.progression');
+		const progressionBottom = document.querySelector('.progression-bottom');
+		const progressionTop = document.querySelector('.progression-top');
+		
+		progressionTop.style.background= '#'+('00000'+(Math.random()*(1<<24)|0).toString(16)).slice(-6)
+
+		const boxColor = '#'+('00000'+(Math.random()*(1<<24)|0).toString(16)).slice(-6)
+
+		const ROLL_DIRECTION = Math.random();
+
+		if (ROLL_DIRECTION > 0.5) {
+			// reverse the array to DRY out this section
+			for (let i = 0; i < NUM_BARS; i++) {
+				const box = document.createElement('div');
+
+				box.className = 'box';
+				box.style.width = fibs[i] / relW * 100  + '%';
+				box.style.background = boxColor;
+
+				if (i < NUM_BARS) {
+					box.style.marginRight = fibs[NUM_BARS - (NUM_BARS === 5 ? 1 : 2) - i] / relW * 100 + '%';
+				}
+
+				progressionBottom.appendChild(box);
+			}
+		} else {
+			for (let i = NUM_BARS - 1; i >= 0; i--) {
+				const box = document.createElement('div');
+
+				box.className = 'box';
+				box.style.width = fibs[i] / relW * 100  + '%';
+				box.style.background = boxColor;
+
+				if (i >= 1) {
+					box.style.marginRight = fibs[NUM_BARS - (NUM_BARS === 5 ? 0 : 1) - i] / relW * 100 + '%';
+				}
+
+				progressionBottom.appendChild(box);
+			}
+		}
+	</script>
+</body>
+</html>
