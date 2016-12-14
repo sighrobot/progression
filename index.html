@@ -54,53 +54,45 @@
 			<div class="progression-bottom"></div>
 		</div>
 	</div>
-	
+
 
 	<script>
-		const ROLL_BARS = Math.random();
-		const NUM_BARS = ROLL_BARS > 0.5 ? 5 : 8;
-		const relW = ROLL_BARS > 0.5 ? 23 : 87;
+		var toPctStr = function(value) { return value * 100 + '%'; };
 
-		const fibs = [1, 1, 2, 3, 5, 8, 13, 21];
-		const progression = document.querySelector('.progression');
-		const progressionBottom = document.querySelector('.progression-bottom');
-		const progressionTop = document.querySelector('.progression-top');
-		
-		progressionTop.style.background= '#'+('00000'+(Math.random()*(1<<24)|0).toString(16)).slice(-6)
+		var genRandColorHexStr = function() {
+			return '#' + ('00000' + (Math.random() * (1 << 24) | 0).toString(16)).slice(-6);
+		};
 
-		const boxColor = '#'+('00000'+(Math.random()*(1<<24)|0).toString(16)).slice(-6)
+		var NUM_BARS_TO_NORMALIZED_WIDTH = {
+			5: 23,
+			8: 87,
+		};
 
-		const ROLL_DIRECTION = Math.random();
+		document.querySelector('.progression-top').style.background = genRandColorHexStr();
 
-		if (ROLL_DIRECTION > 0.5) {
-			// reverse the array to DRY out this section
-			for (let i = 0; i < NUM_BARS; i++) {
-				const box = document.createElement('div');
+		var ROLL_DIRECTION = Math.random();
 
-				box.className = 'box';
-				box.style.width = fibs[i] / relW * 100  + '%';
-				box.style.background = boxColor;
+		var NUM_BARS = Math.random() > 0.5 ? 5 : 8;
+		var NORMALIZED_WIDTH = NUM_BARS_TO_NORMALIZED_WIDTH[NUM_BARS];
+		var SERIES = [1, 1, 2, 3, 5, 8, 13, 21].slice(0, NUM_BARS);
 
-				if (i < NUM_BARS) {
-					box.style.marginRight = fibs[NUM_BARS - (NUM_BARS === 5 ? 1 : 2) - i] / relW * 100 + '%';
-				}
+		if (ROLL_DIRECTION > 0.5) { SERIES.reverse(); }
 
-				progressionBottom.appendChild(box);
-			}
-		} else {
-			for (let i = NUM_BARS - 1; i >= 0; i--) {
-				const box = document.createElement('div');
+		var $bottom = document.querySelector('.progression-bottom');
+		var BAR_COLOR = genRandColorHexStr();
+		var MARGIN_OFFSET = NUM_BARS - (  ROLL_DIRECTION >= 0.5
+							            ? (NUM_BARS === 5 ? 2 : 1)
+										: (NUM_BARS === 5 ? 1 : 2));
 
-				box.className = 'box';
-				box.style.width = fibs[i] / relW * 100  + '%';
-				box.style.background = boxColor;
+		for (let i = 0; i < NUM_BARS; i++) {
+			var bar = document.createElement('div');
 
-				if (i >= 1) {
-					box.style.marginRight = fibs[NUM_BARS - (NUM_BARS === 5 ? 0 : 1) - i] / relW * 100 + '%';
-				}
+			bar.className = 'box';
+			bar.style.background = BAR_COLOR;
+			bar.style.marginRight = toPctStr(SERIES[MARGIN_OFFSET - i] / NORMALIZED_WIDTH);
+			bar.style.width = toPctStr(SERIES[i] / NORMALIZED_WIDTH);
 
-				progressionBottom.appendChild(box);
-			}
+			$bottom.appendChild(bar);
 		}
 	</script>
 </body>
