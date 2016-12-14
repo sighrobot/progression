@@ -60,26 +60,31 @@
         };
 
         var NUM_BARS_TO_NORMALIZED_WIDTH = {
-            5: 23,
+            5: 30,
             8: 87,
         };
 
         var NUM_BARS = Math.random() > 0.5 ? 5 : 8;
         var NORMALIZED_WIDTH = NUM_BARS_TO_NORMALIZED_WIDTH[NUM_BARS];
-        var SERIES = [1, 1, 2, 3, 5, 8, 13, 21].slice(0, NUM_BARS);
+        var SERIES = [1, 1, 2, 3, 5, 8, 13, 21];
+
+        if (NUM_BARS === 5) {
+            SERIES = SERIES.slice(1, NUM_BARS + 1);
+        }
 
         var $progression = document.querySelector('.progression');
         var $top = document.querySelector('.progression-top');
         var $bottom = document.querySelector('.progression-bottom');
 
-        $progression.style.width = '90vw';
+        var TOTAL_WIDTH = 90;
+
+        $progression.style.width = TOTAL_WIDTH + 'vw';
         $top.style.background = genRandColorHexStr();
-        $top.style.height = (SERIES[0] / NORMALIZED_WIDTH * 90) + 'vw';
+        $top.style.height = (SERIES[0] / NORMALIZED_WIDTH * TOTAL_WIDTH) + 'vw';
 
         if (Math.random() > 0.5) {
             $progression.style.transform = 'scale(-1, 1)';
         }
-
 
         var BAR_COLOR = genRandColorHexStr();
 
@@ -88,8 +93,8 @@
 
             bar.className = 'box';
             bar.style.background = BAR_COLOR;
-            bar.style.marginRight = toPctStr(SERIES[NUM_BARS - (NUM_BARS === 5 ? 1 : 2) - i] / NORMALIZED_WIDTH);
-            bar.style.height = (SERIES[0] / NORMALIZED_WIDTH * 90) + 'vw';
+            bar.style.marginRight = toPctStr(SERIES[NUM_BARS - i - 2] / NORMALIZED_WIDTH);
+            bar.style.height = (SERIES[0] / NORMALIZED_WIDTH * TOTAL_WIDTH) + 'vw';
             bar.style.width = toPctStr(SERIES[i] / NORMALIZED_WIDTH);
 
             $bottom.appendChild(bar);
