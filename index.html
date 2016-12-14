@@ -1,99 +1,98 @@
 <!doctype html>
 <html>
 <head>
-	<title></title>
-	<style>
-		html,
-		body {
-			margin: 0;
-		}
+    <title></title>
+    <style>
+        html,
+        body {
+            margin: 0;
+        }
 
-		body {
-			height: 100vh;
-		}
+        body {
+            height: 100vh;
+        }
 
-		.container {
-			height: 100%;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
+        .container {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-		.progression {
-			align-items: center;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			height: 100%;
-			width: 75%;
-		}
+        .progression {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            width: 75%;
+        }
 
-		.progression-top {
-			background: #333;
-			height: 2vw;
-			width: 100%;
-		}
+        .progression-top {
+            background: #333;
+            height: 2vw;
+            width: 100%;
+        }
 
-		.progression-bottom {
-			display: flex;
-			width: 100%;
-		}
+        .progression-bottom {
+            display: flex;
+            width: 100%;
+        }
 
-		.box {
-			height: 2vw;
-			flex-shrink: 0;
-		}
-
-	</style>
+        .box {
+            height: 2vw;
+            flex-shrink: 0;
+        }
+    </style>
 
 </head>
 <body>
-	<div class="container">
-		<div class="progression">
-			<div class="progression-top"></div>
-			<div class="progression-bottom"></div>
-		</div>
-	</div>
+    <div class="container">
+        <div class="progression">
+            <div class="progression-top"></div>
+            <div class="progression-bottom"></div>
+        </div>
+    </div>
 
 
-	<script>
-		var toPctStr = function(value) { return value * 100 + '%'; };
+    <script>
+        var toPctStr = function(value) { return value * 100 + '%'; };
 
-		var genRandColorHexStr = function() {
-			return '#' + ('00000' + (Math.random() * (1 << 24) | 0).toString(16)).slice(-6);
-		};
+        var genRandColorHexStr = function() {
+            return '#' + ('00000' + (Math.random() * (1 << 24) | 0).toString(16)).slice(-6);
+        };
 
-		var NUM_BARS_TO_NORMALIZED_WIDTH = {
-			5: 23,
-			8: 87,
-		};
+        var NUM_BARS_TO_NORMALIZED_WIDTH = {
+            5: 23,
+            8: 87,
+        };
 
-		document.querySelector('.progression-top').style.background = genRandColorHexStr();
+        document.querySelector('.progression-top').style.background = genRandColorHexStr();
 
-		var ROLL_DIRECTION = Math.random();
+        var ROLL_DIRECTION = Math.random();
 
-		var NUM_BARS = Math.random() > 0.5 ? 5 : 8;
-		var NORMALIZED_WIDTH = NUM_BARS_TO_NORMALIZED_WIDTH[NUM_BARS];
-		var SERIES = [1, 1, 2, 3, 5, 8, 13, 21].slice(0, NUM_BARS);
+        var NUM_BARS = Math.random() > 0.5 ? 5 : 8;
+        var NORMALIZED_WIDTH = NUM_BARS_TO_NORMALIZED_WIDTH[NUM_BARS];
+        var SERIES = [1, 1, 2, 3, 5, 8, 13, 21].slice(0, NUM_BARS);
 
-		if (ROLL_DIRECTION > 0.5) { SERIES.reverse(); }
+        if (ROLL_DIRECTION > 0.5) { SERIES.reverse(); }
 
-		var $bottom = document.querySelector('.progression-bottom');
-		var BAR_COLOR = genRandColorHexStr();
-		var MARGIN_OFFSET = NUM_BARS - (  ROLL_DIRECTION >= 0.5
-							            ? (NUM_BARS === 5 ? 2 : 1)
-										: (NUM_BARS === 5 ? 1 : 2));
+        var $bottom = document.querySelector('.progression-bottom');
+        var BAR_COLOR = genRandColorHexStr();
+        var MARGIN_OFFSET = NUM_BARS - (  ROLL_DIRECTION >= 0.5
+                                        ? (NUM_BARS === 5 ? 2 : 1)
+                                        : (NUM_BARS === 5 ? 1 : 2));
 
-		for (let i = 0; i < NUM_BARS; i++) {
-			var bar = document.createElement('div');
+        for (let i = 0; i < NUM_BARS; i++) {
+            var bar = document.createElement('div');
 
-			bar.className = 'box';
-			bar.style.background = BAR_COLOR;
-			bar.style.marginRight = toPctStr(SERIES[MARGIN_OFFSET - i] / NORMALIZED_WIDTH);
-			bar.style.width = toPctStr(SERIES[i] / NORMALIZED_WIDTH);
+            bar.className = 'box';
+            bar.style.background = BAR_COLOR;
+            bar.style.marginRight = toPctStr(SERIES[MARGIN_OFFSET - i] / NORMALIZED_WIDTH);
+            bar.style.width = toPctStr(SERIES[i] / NORMALIZED_WIDTH);
 
-			$bottom.appendChild(bar);
-		}
-	</script>
+            $bottom.appendChild(bar);
+        }
+    </script>
 </body>
 </html>
