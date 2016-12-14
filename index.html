@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title></title>
+    <title>Random Progression</title>
     <style>
         html,
         body {
@@ -13,10 +13,10 @@
         }
 
         .container {
-            height: 100%;
-            display: flex;
             align-items: center;
+            display: flex;
             justify-content: center;
+            height: 100%;
         }
 
         .progression {
@@ -28,7 +28,6 @@
         }
 
         .progression-top {
-            background: #333;
             width: 100%;
         }
 
@@ -36,12 +35,7 @@
             display: flex;
             width: 100%;
         }
-
-        .box {
-            flex-shrink: 0;
-        }
     </style>
-
 </head>
 <body>
     <div class="container">
@@ -50,7 +44,6 @@
             <div class="progression-bottom"></div>
         </div>
     </div>
-
 
     <script>
         var toPctStr = function(value) { return value * 100 + '%'; };
@@ -72,15 +65,14 @@
             SERIES = SERIES.slice(1, NUM_BARS + 1);
         }
 
+        var TOTAL_WIDTH_PCT = 90;
         var $progression = document.querySelector('.progression');
         var $top = document.querySelector('.progression-top');
         var $bottom = document.querySelector('.progression-bottom');
 
-        var TOTAL_WIDTH = 90;
-
-        $progression.style.width = TOTAL_WIDTH + 'vw';
+        $progression.style.width = TOTAL_WIDTH_PCT + 'vw';
         $top.style.background = genRandColorHexStr();
-        $top.style.height = (SERIES[0] / NORMALIZED_WIDTH * TOTAL_WIDTH) + 'vw';
+        $top.style.height = (SERIES[0] / NORMALIZED_WIDTH * TOTAL_WIDTH_PCT) + 'vw';
 
         if (Math.random() > 0.5) {
             $progression.style.transform = 'scale(-1, 1)';
@@ -88,13 +80,12 @@
 
         var BAR_COLOR = genRandColorHexStr();
 
-        for (let i = 0; i < NUM_BARS; i++) {
+        for (var i = 0; i < NUM_BARS; i++) {
             var bar = document.createElement('div');
 
-            bar.className = 'box';
             bar.style.background = BAR_COLOR;
             bar.style.marginRight = toPctStr(SERIES[NUM_BARS - i - 2] / NORMALIZED_WIDTH);
-            bar.style.height = (SERIES[0] / NORMALIZED_WIDTH * TOTAL_WIDTH) + 'vw';
+            bar.style.height = (SERIES[0] / NORMALIZED_WIDTH * TOTAL_WIDTH_PCT) + 'vw';
             bar.style.width = toPctStr(SERIES[i] / NORMALIZED_WIDTH);
 
             $bottom.appendChild(bar);
