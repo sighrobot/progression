@@ -25,12 +25,10 @@
             flex-direction: column;
             justify-content: center;
             height: 100%;
-            width: 75%;
         }
 
         .progression-top {
             background: #333;
-            height: 2vw;
             width: 100%;
         }
 
@@ -40,7 +38,6 @@
         }
 
         .box {
-            height: 2vw;
             flex-shrink: 0;
         }
     </style>
@@ -67,28 +64,32 @@
             8: 87,
         };
 
-        document.querySelector('.progression-top').style.background = genRandColorHexStr();
-
-        var ROLL_DIRECTION = Math.random();
-
         var NUM_BARS = Math.random() > 0.5 ? 5 : 8;
         var NORMALIZED_WIDTH = NUM_BARS_TO_NORMALIZED_WIDTH[NUM_BARS];
         var SERIES = [1, 1, 2, 3, 5, 8, 13, 21].slice(0, NUM_BARS);
 
-        if (ROLL_DIRECTION > 0.5) { SERIES.reverse(); }
-
+        var $progression = document.querySelector('.progression');
+        var $top = document.querySelector('.progression-top');
         var $bottom = document.querySelector('.progression-bottom');
+
+        $progression.style.width = '90vw';
+        $top.style.background = genRandColorHexStr();
+        $top.style.height = (SERIES[0] / NORMALIZED_WIDTH * 90) + 'vw';
+
+        if (Math.random() > 0.5) {
+            $progression.style.transform = 'scale(-1, 1)';
+        }
+
+
         var BAR_COLOR = genRandColorHexStr();
-        var MARGIN_OFFSET = NUM_BARS - (  ROLL_DIRECTION >= 0.5
-                                        ? (NUM_BARS === 5 ? 2 : 1)
-                                        : (NUM_BARS === 5 ? 1 : 2));
 
         for (let i = 0; i < NUM_BARS; i++) {
             var bar = document.createElement('div');
 
             bar.className = 'box';
             bar.style.background = BAR_COLOR;
-            bar.style.marginRight = toPctStr(SERIES[MARGIN_OFFSET - i] / NORMALIZED_WIDTH);
+            bar.style.marginRight = toPctStr(SERIES[NUM_BARS - (NUM_BARS === 5 ? 1 : 2) - i] / NORMALIZED_WIDTH);
+            bar.style.height = (SERIES[0] / NORMALIZED_WIDTH * 90) + 'vw';
             bar.style.width = toPctStr(SERIES[i] / NORMALIZED_WIDTH);
 
             $bottom.appendChild(bar);
